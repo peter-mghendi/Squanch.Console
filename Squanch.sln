@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squanch.CLI", "Squanch.CLI\Squanch.CLI.csproj", "{23821794-98FA-4AB9-8FBA-B15350A6A79F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squanch.Core", "Squanch.Core\Squanch.Core.csproj", "{CDE4E7DE-66CD-4B62-907D-4988C4162EA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{23821794-98FA-4AB9-8FBA-B15350A6A79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23821794-98FA-4AB9-8FBA-B15350A6A79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23821794-98FA-4AB9-8FBA-B15350A6A79F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDE4E7DE-66CD-4B62-907D-4988C4162EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDE4E7DE-66CD-4B62-907D-4988C4162EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDE4E7DE-66CD-4B62-907D-4988C4162EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDE4E7DE-66CD-4B62-907D-4988C4162EA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

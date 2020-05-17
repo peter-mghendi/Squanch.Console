@@ -15,6 +15,23 @@ namespace Squanch.Core.Models
         public string Image { get; set; }
         public List<string> Episodes { get; set; }
 
+        public enum CharacterStatus
+        {
+            Any,
+            Alive, 
+            Dead,
+            Unknown
+        }
+
+        public enum CharacterGender
+        {
+            Any,
+            Male,
+            Female,
+            Genderless,
+            Unknown
+        }
+
         public Character()
         {
         }
@@ -29,6 +46,6 @@ namespace Squanch.Core.Models
             Origin = origin ?? throw new ArgumentNullException(nameof(origin));
             Location = location ?? throw new ArgumentNullException(nameof(location));
             Image = image ?? throw new ArgumentNullException(nameof(image));
-        } 
+        }
     }
 }

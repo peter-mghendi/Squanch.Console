@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Squanch.Core.Models
 {
-    internal class LocationManifest
+    class LocationManifest
     {
         public string Name { get; set; }
         public string Url { get; set; }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Squanch.Core.Models
 {
-    class Character : Base
+    public class Character : Base
     {
         public string Status { get; set; }
         public string Species { get; set; }

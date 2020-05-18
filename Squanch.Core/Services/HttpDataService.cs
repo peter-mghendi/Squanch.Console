@@ -7,34 +7,33 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using Flurl;
+using Flurl.Http;
 
 namespace Squanch.Core.Services
 {
-    public class HttpDataService
+    class HttpDataService
     {
         private readonly Dictionary<string, object> responseCache;
-        private readonly HttpClient client;
+        private readonly string baseAddress = "";
 
         public HttpDataService(string defaultBaseUrl = "")
         {
-            client = new HttpClient();
-
             if (!string.IsNullOrEmpty(defaultBaseUrl))
-                client.BaseAddress = new Uri($"{defaultBaseUrl}/");
+                baseAddress = $"{defaultBaseUrl}/";
 
             responseCache = new Dictionary<string, object>();
         }
 
         public async Task<T> GetAsync<T>(string uri, Dictionary<string, string> parameters = null, bool forceRefresh = false)
         {
-            T result = default;
-            if (parameters != null)
-                uri = $"{uri}?{string.Join("&", parameters.Select(parameter => $"{HttpUtility.UrlEncode(parameter.Key)}={HttpUtility.UrlEncode(parameter.Value)}"))}";
+            T result;
+            uri = $"{baseAddress}{uri}";
+            if (parameters != null) uri.SetQueryParams(parameters);
             
             if (forceRefresh || !responseCache.ContainsKey(uri))
             {
-                var json = await client.GetStringAsync(uri);
-                result = await Task.Run(() => JsonSerializer.Deserialize<T>(json));
+                result = await uri.GetJsonAsync<T>();
 
                 if (responseCache.ContainsKey(uri)) 
                     responseCache[uri] = result;
@@ -46,6 +45,6 @@ namespace Squanch.Core.Services
         }
 
         public async Task<T> GetFromFullUriAsync<T>(string uri, Dictionary<string, string> parameters = null, bool forceRefresh = false)
-            => await GetAsync<T>(uri.Substring(client.BaseAddress.ToString().Length), parameters, forceRefresh);
+            => await GetAsync<T>(uri.Substring(baseAddress.Length), parameters, forceRefresh);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Squanch.Core.Data.Models;
 using Squanch.Core.Helpers;
 using Squanch.Core.Models;
@@ -8,11 +9,12 @@ using Squanch.Core.Services;
 
 namespace Squanch.Core.Data
 {
-    class Repository
+    public class Repository
     {
-        private readonly object _padlock;
-        private Repository _instance;
-        public Repository Instance
+        private static object _padlock = new object();
+        private static Repository _instance;
+
+        public static Repository Instance
         {
             get
             {
@@ -31,7 +33,7 @@ namespace Squanch.Core.Data
 
         public List<Location> Locations { get => httpDataService.GetAsync<Response<List<Location>>>("location").Result.Results; }
 
-        public List<Character> GetFilteredCharacters(string name = null, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
+        public async Task<List<Character>> GetCharacters(string name = null, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
             string species = null, string type = null, Character.CharacterGender characterGender = Character.CharacterGender.Any)
         {
             string status = characterStatus != Character.CharacterStatus.Any ? 
@@ -45,28 +47,28 @@ namespace Squanch.Core.Data
             criteria.AddIfNotNull("status", status);
             criteria.AddIfNotNull("species", species);
             criteria.AddIfNotNull("type", type);
-            criteria.AddIfNotNull("gender", gender);            
+            criteria.AddIfNotNull("gender", gender);
 
-            return httpDataService.GetAsync<Response<List<Character>>>("character", criteria).Result.Results;
+            return (await httpDataService.GetAsync<Response<List<Character>>>("character", criteria)).Results;
         }
 
-        public List<Episode> GetFilteredEpisodes(string name = null, string episode = null)
+        public async Task<List<Episode>> GetEpisodes(string name = null, string episode = null)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
             criteria.AddIfNotNull("name", name);
             criteria.AddIfNotNull("episode", episode);
 
-            return httpDataService.GetAsync<Response<List<Episode>>>("episode", criteria).Result.Results;
+            return (await httpDataService.GetAsync<Response<List<Episode>>>("episode", criteria)).Results;
         }
 
-        public List<Location> GetFilteredLocations(string name = null, string type = null, string dimension = null)
+        public async Task<List<Location>> GetLocations(string name = null, string type = null, string dimension = null)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
             criteria.AddIfNotNull("name", name);
             criteria.AddIfNotNull("type", type);
             criteria.AddIfNotNull("dimension", dimension);
 
-            return httpDataService.GetAsync<Response<List<Location>>>("location", criteria).Result.Results;
+            return (await httpDataService.GetAsync<Response<List<Location>>>("location", criteria)).Results;
         }
 
         public T GetFromUri<T>(string uri) => httpDataService.GetAsync<T>(uri).Result;

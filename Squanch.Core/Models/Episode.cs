@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Squanch.Core.Models
 {
-    class Episode : Base
+    public class Episode : Base
     {
         public string AirDate { get; set; }
         public List<string> Characters { get; set; }

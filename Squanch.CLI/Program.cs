@@ -1,4 +1,5 @@
 ﻿using System;
+using Squanch.
 
 namespace Squanch.CLI
 {

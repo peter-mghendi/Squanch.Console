@@ -25,11 +25,11 @@ namespace Squanch.Core.Data
 
         private readonly HttpDataService httpDataService = new HttpDataService("https://rickandmortyapi.com/api");
 
-        public List<Character> Characters { get => httpDataService.GetAsync<Response<Character>>("character").Result.Results; }
+        public List<Character> Characters { get => httpDataService.GetAsync<Response<List<Character>>>("character").Result.Results; }
 
-        public List<Episode> Episodes { get => httpDataService.GetAsync<Response<Episode>>("episode").Result.Results; }
+        public List<Episode> Episodes { get => httpDataService.GetAsync<Response<List<Episode>>>("episode").Result.Results; }
 
-        public List<Location> Locations { get => httpDataService.GetAsync<Response<Location>>("location").Result.Results; }
+        public List<Location> Locations { get => httpDataService.GetAsync<Response<List<Location>>>("location").Result.Results; }
 
         public List<Character> GetFilteredCharacters(string name = null, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
             string species = null, string type = null, Character.CharacterGender characterGender = Character.CharacterGender.Any)
@@ -47,7 +47,7 @@ namespace Squanch.Core.Data
             criteria.AddIfNotNull("type", type);
             criteria.AddIfNotNull("gender", gender);            
 
-            return httpDataService.GetAsync<Response<Character>>("character", criteria).Result.Results;
+            return httpDataService.GetAsync<Response<List<Character>>>("character", criteria).Result.Results;
         }
 
         public List<Episode> GetFilteredEpisodes(string name = null, string episode = null)
@@ -56,7 +56,7 @@ namespace Squanch.Core.Data
             criteria.AddIfNotNull("name", name);
             criteria.AddIfNotNull("episode", episode);
 
-            return httpDataService.GetAsync<Response<Episode>>("episode", criteria).Result.Results;
+            return httpDataService.GetAsync<Response<List<Episode>>>("episode", criteria).Result.Results;
         }
 
         public List<Location> GetFilteredLocations(string name = null, string type = null, string dimension = null)
@@ -66,7 +66,9 @@ namespace Squanch.Core.Data
             criteria.AddIfNotNull("type", type);
             criteria.AddIfNotNull("dimension", dimension);
 
-            return httpDataService.GetAsync<Response<Location>>("episode", criteria).Result.Results;
+            return httpDataService.GetAsync<Response<List<Location>>>("location", criteria).Result.Results;
         }
+
+        public T GetFromUri<T>(string uri) => httpDataService.GetAsync<T>(uri).Result;
     }
 }

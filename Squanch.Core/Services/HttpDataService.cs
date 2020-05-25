@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using Flurl;
 using Flurl.Http;
 
@@ -37,13 +30,16 @@ namespace Squanch.Core.Services
 
                 if (responseCache.ContainsKey(uri)) 
                     responseCache[uri] = result;
-                else responseCache.Add(uri, result);
+                else 
+                    responseCache.Add(uri, result);
             }
-            else result = (T)responseCache[uri];
+            else 
+                result = (T)responseCache[uri];
 
             return result;
         }
 
+        // TODO replace with a conditional check in GetAsync
         public async Task<T> GetFromFullUriAsync<T>(string uri, Dictionary<string, string> parameters = null, bool forceRefresh = false)
             => await GetAsync<T>(uri.Substring(baseAddress.Length), parameters, forceRefresh);
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Squanch.Core.Data.Models
 {
-    class ResponseInfo
+    public class PageInfo
     {
         public int Count { get; set; }
         public int Pages { get; set; }

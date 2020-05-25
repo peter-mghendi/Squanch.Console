@@ -11,30 +11,23 @@ namespace Squanch.Core.Data
 {
     public class Repository
     {
-        private static object _padlock = new object();
+        private readonly HttpDataService httpDataService = new HttpDataService("https://rickandmortyapi.com/api");
+        private static object _lock = new object();
         private static Repository _instance;
 
         public static Repository Instance
         {
             get
             {
-                lock (_padlock)
+                lock (_lock)
                 {
                     return _instance ??= new Repository();
                 }
             }
         }
 
-        private readonly HttpDataService httpDataService = new HttpDataService("https://rickandmortyapi.com/api");
-
-        public List<Character> Characters { get => httpDataService.GetAsync<Response<List<Character>>>("character").Result.Results; }
-
-        public List<Episode> Episodes { get => httpDataService.GetAsync<Response<List<Episode>>>("episode").Result.Results; }
-
-        public List<Location> Locations { get => httpDataService.GetAsync<Response<List<Location>>>("location").Result.Results; }
-
-        public async Task<List<Character>> GetCharacters(string name = null, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
-            string species = null, string type = null, Character.CharacterGender characterGender = Character.CharacterGender.Any)
+        public async Task<(List<Character>, PageInfo)> GetCharacters(string name = default, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
+            string species = default, string type = default, Character.CharacterGender characterGender = Character.CharacterGender.Any)
         {
             string status = characterStatus != Character.CharacterStatus.Any ? 
                 new[] { "alive", "dead", "unknown" }[(int)(characterStatus + 1)] : null;
@@ -49,28 +42,34 @@ namespace Squanch.Core.Data
             criteria.AddIfNotNull("type", type);
             criteria.AddIfNotNull("gender", gender);
 
-            return (await httpDataService.GetAsync<Response<List<Character>>>("character", criteria)).Results;
+            var response = await httpDataService.GetAsync<Response<List<Character>>>("character", criteria);
+
+            return (response.Results, response.Info);
         }
 
-        public async Task<List<Episode>> GetEpisodes(string name = null, string episode = null)
+        public async Task<(List<Episode>, PageInfo)> GetEpisodes(string name = null, string episode = null)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
             criteria.AddIfNotNull("name", name);
             criteria.AddIfNotNull("episode", episode);
 
-            return (await httpDataService.GetAsync<Response<List<Episode>>>("episode", criteria)).Results;
+            var response = await httpDataService.GetAsync<Response<List<Episode>>>("episode", criteria);
+
+            return (response.Results, response.Info);
         }
 
-        public async Task<List<Location>> GetLocations(string name = null, string type = null, string dimension = null)
+        public async Task<(List<Location>, PageInfo)> GetLocations(string name = null, string type = null, string dimension = null)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
             criteria.AddIfNotNull("name", name);
             criteria.AddIfNotNull("type", type);
             criteria.AddIfNotNull("dimension", dimension);
 
-            return (await httpDataService.GetAsync<Response<List<Location>>>("location", criteria)).Results;
+            var response = await httpDataService.GetAsync<Response<List<Location>>>("location", criteria);
+
+            return (response.Results, response.Info);
         }
 
-        public T GetFromUri<T>(string uri) => httpDataService.GetAsync<T>(uri).Result;
+        public T GetFromUri<T>(string uri) => httpDataService.GetFromFullUriAsync<T>(uri).Result;
     }
 }

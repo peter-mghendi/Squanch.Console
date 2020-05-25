@@ -4,7 +4,7 @@ namespace Squanch.Core.Data.Models
 {
     class Response<TResponse>
     {
-        public ResponseInfo Info { get; set; }
+        public PageInfo Info { get; set; }
         public TResponse Results { get; set; }
     }
 }

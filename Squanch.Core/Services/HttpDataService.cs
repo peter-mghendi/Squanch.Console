@@ -22,7 +22,7 @@ namespace Squanch.Core.Services
         {
             T result;
             uri = $"{baseAddress}{uri}";
-            if (parameters != null) uri.SetQueryParams(parameters);
+            if (parameters != null) uri = uri.SetQueryParams(parameters).ToString();
             
             if (forceRefresh || !responseCache.ContainsKey(uri))
             {

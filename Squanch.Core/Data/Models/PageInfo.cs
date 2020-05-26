@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Squanch.Core.Data.Models
+﻿namespace Squanch.Core.Data.Models
 {
     public class PageInfo
     {

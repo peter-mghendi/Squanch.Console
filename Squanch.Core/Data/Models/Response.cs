@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Squanch.Core.Data.Models
+﻿namespace Squanch.Core.Data.Models
 {
     class Response<TResponse>
     {

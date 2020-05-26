@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Squanch.Core.Models
 {
-    public class Character : Base
+    public class Character : Base 
     {
         public string Status { get; set; }
         public string Species { get; set; }
@@ -30,22 +29,6 @@ namespace Squanch.Core.Models
             Female,
             Genderless,
             Unknown
-        }
-
-        public Character()
-        {
-        }
-
-        public Character(int iD, string name, string url, DateTimeOffset created, string status, string species, string type,
-            string gender, LocationManifest origin, LocationManifest location, string image) : base(iD, name, url, created)
-        {
-            Status = status ?? throw new ArgumentNullException(nameof(status));
-            Species = species ?? throw new ArgumentNullException(nameof(species));
-            Type = type ?? throw new ArgumentNullException(nameof(type));
-            Gender = gender ?? throw new ArgumentNullException(nameof(gender));
-            Origin = origin ?? throw new ArgumentNullException(nameof(origin));
-            Location = location ?? throw new ArgumentNullException(nameof(location));
-            Image = image ?? throw new ArgumentNullException(nameof(image));
         }
     }
 }

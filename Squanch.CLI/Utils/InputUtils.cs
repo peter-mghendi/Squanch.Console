@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System;
 
-namespace Squanch.Core.Helpers
+namespace Squanch.CLI.Utils
 {
     public static class InputUtils 
     {
         private const string defaultErrorPrompt = "ERROR! Invalid Value. Try again: ";
-        private static string[] defaultSpecialChars = {"#"};
 
         public static int ReadSignedInt
         (
@@ -38,32 +36,50 @@ namespace Squanch.Core.Helpers
                 : output;
         }
 
-        public static List<string> ReadPlayString
+        public static string ReadSignedIntOrSpecial
         (
-            string prompt = "Enter a play string: ",
+            string prompt = "Enter an Int32: ",
             string errorPrompt = defaultErrorPrompt,
-            uint max = uint.MaxValue,
-            string[] endChars = null,
-            List<string> playString = null,
+            int min = int.MinValue,
+            int max = int.MaxValue,
+            string[] specialChars = default,
             bool error = false
         )
         {
-            Console.Write(error? errorPrompt: prompt);
+            Console.Write(error ? errorPrompt : prompt);
+
             string input = Console.ReadLine().Trim();
-            _ = playString ??= new List<string>();
 
-            if(input.Equals("")) return playString;
+            if (Array.Exists(specialChars, x => x == input))
+                return input;
 
-            playString.Add(input);
+            if (int.TryParse(input, out int output) && output >= min && output <= max)
+                return input;
 
-            if (Array.Exists(endChars ??= defaultSpecialChars, x => x == input)) 
-                return playString;
+            return ReadSignedIntOrSpecial(prompt, errorPrompt, min, max, specialChars, true);
+        }
 
-            if (uint.TryParse(input, out uint temp) && temp <= max)
-                return ReadPlayString(prompt, errorPrompt, max, endChars, playString, false);
+        public static string ReadUnsignedIntOrSpecial
+        (
+            string prompt = "Enter a UInt32: ",
+            string errorPrompt = defaultErrorPrompt,
+            uint min = uint.MinValue,
+            uint max = uint.MaxValue,
+            string[] specialChars = default,
+            bool error = false
+        )
+        {
+            Console.Write(error ? errorPrompt : prompt);
 
-            playString.RemoveAt(playString.Count - 1);
-            return ReadPlayString(prompt, errorPrompt, max, endChars, playString, true);
+            string input = Console.ReadLine().Trim();
+
+            if (Array.Exists(specialChars, x => x == input))
+                return input;
+
+            if (uint.TryParse(input, out uint output) && output >= min && output <= max)
+                return input;
+
+            return ReadUnsignedIntOrSpecial(prompt, errorPrompt, min, max, specialChars, true);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Squanch.Core.Data
             }
         }
 
-        public async Task<(List<Character>, PageInfo)> GetCharacters(uint page = 1, string name = default, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
+        public async Task<(List<Character>, PageInfo)> GetCharacters(int page = 1, string name = default, Character.CharacterStatus characterStatus = Character.CharacterStatus.Any,
             string species = default, string type = default, Character.CharacterGender characterGender = Character.CharacterGender.Any)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
@@ -50,7 +50,7 @@ namespace Squanch.Core.Data
             return (response.Results, response.Info);
         }
 
-        public async Task<(List<Episode>, PageInfo)> GetEpisodes(uint page = 1, string name = default, string episode = default)
+        public async Task<(List<Episode>, PageInfo)> GetEpisodes(int page = 1, string name = default, string episode = default)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
 
@@ -63,7 +63,7 @@ namespace Squanch.Core.Data
             return (response.Results, response.Info);
         }
 
-        public async Task<(List<Location>, PageInfo)> GetLocations(uint page = 1, string name = default, string type = default, string dimension = default)
+        public async Task<(List<Location>, PageInfo)> GetLocations(int page = 1, string name = default, string type = default, string dimension = default)
         {
             Dictionary<string, string> criteria = new Dictionary<string, string>();
 
